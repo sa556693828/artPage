@@ -14,6 +14,7 @@ import {
   useWriteContract,
 } from "wagmi";
 import {
+  useReadTokenMaxSupply,
   useWriteTokenApprove,
   useWriteTokenBuyTokens,
   useWriteTokenTransfer,
@@ -23,7 +24,7 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 export default function Demo() {
-  const [Loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [approveToastId, setApproveToastId] = useState<string | undefined>();
@@ -48,6 +49,7 @@ export default function Demo() {
         functionName: "balanceOf",
         args: [account.address as `0x${string}`],
       },
+
       {
         address: tokenAddress as `0x${string}`,
         abi: erc20Abi,
@@ -72,6 +74,9 @@ export default function Demo() {
   });
   const [tokenBalance, totalSupply, decimals, symbol, name] =
     results.data || [];
+  const maxSupply = useReadTokenMaxSupply({
+    address: tokenAddress as `0x${string}`,
+  });
   const ownerAddress = process.env.NEXT_PUBLIC_OWNER_ADDRESS;
   // const key = process.env.NEXT_PUBLIC_KEY;
 
@@ -84,49 +89,39 @@ export default function Demo() {
   const approveResult = useWaitForTransactionReceipt({
     hash: approveTx,
   });
-  const allowance = useReadContract({
-    address: tokenAddress as `0x${string}`,
-    abi: erc20Abi,
-    functionName: "allowance",
-    // args: [ownerAddress as `0x${string}`, account.address as `0x${string}`],
-    args: [ownerAddress as `0x${string}`, account.address as `0x${string}`],
-  });
-  console.log(allowance.data);
-  const approveToken = async (toAddress: `0x${string}`, amount: bigint) => {
-    setApproveLoading(true);
-    const toastId = toast.loading(`Approving...`);
-    setApproveToastId(toastId);
-    try {
-      await approve(
-        {
-          address: tokenAddress as `0x${string}`,
-          args: [ownerAddress as `0x${string}`, amount],
-        },
-        {
-          onError(error: any) {
-            console.error(error);
-            toast.error(`Error approve.`, { id: toastId });
-          },
-        }
-      );
-    } catch (error) {
-      console.error(error);
-      toast.error(`Error approve.`, { id: toastId });
-    } finally {
-      setApproveLoading(false);
-    }
-  };
+  // const allowance = useReadContract({
+  //   address: tokenAddress as `0x${string}`,
+  //   abi: erc20Abi,
+  //   functionName: "allowance",
+  //   args: [ownerAddress as `0x${string}`, account.address as `0x${string}`],
+  // });
+  // const approveToken = async (toAddress: `0x${string}`, amount: bigint) => {
+  //   setApproveLoading(true);
+  //   const toastId = toast.loading(`Approving...`);
+  //   setApproveToastId(toastId);
+  //   try {
+  //     await approve(
+  //       {
+  //         address: tokenAddress as `0x${string}`,
+  //         args: [ownerAddress as `0x${string}`, amount],
+  //       },
+  //       {
+  //         onError(error: any) {
+  //           console.error(error);
+  //           toast.error(`Error approve.`, { id: toastId });
+  //         },
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error(`Error approve.`, { id: toastId });
+  //   } finally {
+  //     setApproveLoading(false);
+  //   }
+  // };
   const buy = async () => {
-    if (!allowance.isSuccess) {
-      return;
-    }
-    const fromAddress = ownerAddress as `0x${string}`;
-    const toAddress = account.address as `0x${string}`;
-    const amount = parseEther("0.005");
+    const amount = parseEther("0.001");
     setLoading(true);
-    // if (allowance.data < amount) {
-    //   await approveToken(toAddress, amount);
-    // } else {
     try {
       await buyTokens(
         {
@@ -137,16 +132,15 @@ export default function Demo() {
           onError(error: any) {
             console.error(error);
             toast.error(`Error buy token.`, {});
+            setLoading(false);
           },
         }
       );
     } catch (error) {
       console.error(error);
       toast.error(`Error buy token.`, {});
-    } finally {
       setLoading(false);
     }
-    // }
   };
   useEffect(() => {
     if (approveResult.isSuccess) {
@@ -157,6 +151,7 @@ export default function Demo() {
   useEffect(() => {
     if (buyResult.isSuccess) {
       toast.success(`Success buy token.`, {});
+      setLoading(false);
     }
   }, [buyResult.isSuccess]);
   return (
@@ -202,8 +197,8 @@ export default function Demo() {
                   </li>
                   <li>
                     <span className="font-medium">總供應量：</span>
-                    {totalSupply && decimals
-                      ? formatUnits(totalSupply, decimals)
+                    {maxSupply.isSuccess && decimals
+                      ? formatUnits(maxSupply.data, decimals)
                       : 0}{" "}
                     {symbol}
                   </li>
@@ -217,17 +212,18 @@ export default function Demo() {
                 <h3 className="text-lg font-semibold mb-2">當前市場資訊</h3>
                 <ul className="space-y-2">
                   <li>
+                    {/* <span className="font-medium">當前價格：</span>10萬 台幣 */}
                     <span className="font-medium">當前價格：</span>10萬 台幣
                   </li>
                   <li>
-                    <span className="font-medium">市值：</span>10億 台幣
+                    <span className="font-medium">市值：</span>1 ETH = 1000 ART
                   </li>
                   <li>
                     <span className="font-medium">24小時交易量：</span>
                     {/* $50,000USD */}
                   </li>
                   <li>
-                    <span className="font-medium">流通供應量：</span>
+                    <span className="font-medium">當前流通供應量：</span>
                     {totalSupply && decimals
                       ? formatUnits(totalSupply, decimals)
                       : 0}{" "}
@@ -240,8 +236,9 @@ export default function Demo() {
               <button
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg w-full"
                 onClick={() => buy()}
+                disabled={loading}
               >
-                {Loading ? "購買中..." : "購買 ART"}
+                {loading ? "購買中..." : "購買 1 ART"}
               </button>
             </div>
           </div>
