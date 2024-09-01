@@ -1,6 +1,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import React, { useContext } from "react";
+import CustomButton from "../button/CustomButton";
 // import Desktop from "./HeaderDesktop";
 // import Mobile from "./HeaderMobile";
 
@@ -65,7 +66,8 @@ export default function Header({ urlPath }: Props) {
         </nav>
       </div>
       <div className="flex-shrink-0">
-        <ConnectButton />
+        <CustomButton />
+        {/* <ConnectButton /> */}
       </div>
     </header>
   );

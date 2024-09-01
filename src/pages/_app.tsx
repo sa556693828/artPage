@@ -14,7 +14,7 @@ const wagmiConfig = getDefaultConfig({
   ssr: true,
   appName: "Art Demo",
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-  chains: [sepolia, polygonAmoy],
+  chains: [sepolia],
   transports: {
     [sepolia.id]: http(`https://sepolia.infura.io/v3/${infuraKey}`),
     [polygonAmoy.id]: http(`https://polygon-amoy.infura.io/v3/${infuraKey}`),
