@@ -155,9 +155,9 @@ export default function Demo() {
     }
   }, [buyResult.isSuccess]);
   return (
-    <section className="py-8 bg-gray-100">
+    <section className="py-8 h-full flex items-center justify-center">
       <div className="container mx-auto px-4">
-        <h2 className="text-5xl font-bold text-center ">{name}</h2>
+        <h2 className="text-5xl font-bold text-center">{name}</h2>
         <h2 className="text-2xl my-4 font-bold text-center ">
           你擁有{" "}
           {tokenBalance && decimals ? formatUnits(tokenBalance, decimals) : 0}{" "}

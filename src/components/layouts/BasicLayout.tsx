@@ -6,7 +6,12 @@ import Footer from "../Footer";
 // import LoadingPage from "../LoadingPage/LoadingPage";
 //   import Loading from "../../pages/Loading";
 // import Footer from "../Footer/Footer";
+import { Inter } from "next/font/google";
 
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 export default function BaseLayout({
   children,
 }: {
@@ -30,7 +35,7 @@ export default function BaseLayout({
   if (isLoading)
     return (
       <main
-        className={`flex min-h-[100dvh] max-w-[100vw] items-center justify-center text-black`}
+        className={`flex min-h-[100dvh] max-w-[100vw] pt-[100px] items-center justify-center text-black ${inter.className}`}
       >
         Loading
       </main>
@@ -40,9 +45,9 @@ export default function BaseLayout({
     <>
       <Header urlPath={urlPath} />
       <main
-        className="max-w-[100vw] text-black bg-white"
+        className="max-w-[100vw] text-black bg-white pt-[100px]"
         style={{
-          minHeight: "calc(100vh - 60px)",
+          minHeight: "calc(100vh - 88px)",
         }}
       >
         {children}
