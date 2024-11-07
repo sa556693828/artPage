@@ -121,7 +121,18 @@ export default function Demo() {
   // };
   const buy = async () => {
     const amount = parseEther("0.001");
+    if (!account.address) {
+      toast.error("請先連接您的錢包。");
+      return;
+    }
+
+    // 检查用户余额是否足够
+    if (!balance || balance.value < amount) {
+      toast.error("您的 ETH 餘額不足");
+      return;
+    }
     setLoading(true);
+
     try {
       await buyTokens(
         {
@@ -131,26 +142,26 @@ export default function Demo() {
         {
           onError(error: any) {
             console.error(error);
-            toast.error(`Error buy token.`, {});
+            toast.error(`購買時錯誤`, {});
             setLoading(false);
           },
         }
       );
     } catch (error) {
       console.error(error);
-      toast.error(`Error buy token.`, {});
+      toast.error(`購買時錯誤`, {});
       setLoading(false);
     }
   };
   useEffect(() => {
     if (approveResult.isSuccess) {
       setIsApproved(true);
-      toast.success(`Success approve.`, { id: approveToastId });
+      toast.success(`批准成功`, { id: approveToastId });
     }
   }, [approveResult.isSuccess]);
   useEffect(() => {
     if (buyResult.isSuccess) {
-      toast.success(`Success buy token.`, {});
+      toast.success(`購買成功`, {});
       setLoading(false);
     }
   }, [buyResult.isSuccess]);

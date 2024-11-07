@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import flow1 from "@/assets/flow/flow1.svg";
-import flow2 from "@/assets/flow/flow2.svg";
-import flow3 from "@/assets/flow/flow3.svg";
-import flow4 from "@/assets/flow/flow4.svg";
-import flow5 from "@/assets/flow/flow5.svg";
-import flow6 from "@/assets/flow/flow6.svg";
-import flow7 from "@/assets/flow/flow7.svg";
-import flow8 from "@/assets/flow/flow8.svg";
-import flow9 from "@/assets/flow/flow9.svg";
-import flow10 from "@/assets/flow/flow10.svg";
-import flow11 from "@/assets/flow/flow11.svg";
-import flow12 from "@/assets/flow/flow12.svg";
-import flow13 from "@/assets/flow/flow13.svg";
+import flow1 from "@/assets/flow/flow1.png";
+import flow2 from "@/assets/flow/flow2.png";
+import flow3 from "@/assets/flow/flow3.png";
+import flow4 from "@/assets/flow/flow4.png";
+import flow5 from "@/assets/flow/flow5.png";
+import flow6 from "@/assets/flow/flow6.png";
+import flow7 from "@/assets/flow/flow7.png";
+import flow8 from "@/assets/flow/flow8.png";
+import flow9 from "@/assets/flow/flow9.png";
+import flow10 from "@/assets/flow/flow10.png";
+import flow11 from "@/assets/flow/flow11.png";
+import flow12 from "@/assets/flow/flow12.png";
+import flow13 from "@/assets/flow/flow13.png";
 import Link from "next/link";
 import ProgressSidebar from "@/components/prograssBar";
 
 export default function Learning() {
   return (
     <section className="py-12 font-inter flex w-4/5 mx-auto">
-      <div className="flex flex-col items-start w-3/4">
+      <div className="flex flex-col items-start w-4/5">
         <h1 className="text-center text-5xl font-normal">藝術幣購買指南</h1>
         <div className="flex items-center gap-4 pt-4 text-[#87909D] text-sm">
           <p>發布時間 2024年10月25日</p>
@@ -182,7 +182,7 @@ export default function Learning() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col w-1/4">
+      <div className="flex flex-col w-1/5">
         <ProgressSidebar />
       </div>
     </section>

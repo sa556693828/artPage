@@ -32,15 +32,12 @@ export default function App({ Component, pageProps }: AppProps) {
             <Toaster
               toastOptions={{
                 style: {
-                  background: "#0F0F0F",
                   paddingTop: "6px",
                   paddingBottom: "6px",
                   paddingRight: "10px",
                   paddingLeft: "10px",
                   border: "1px solid #B4FF78",
-                  color: "#B4FF78",
                   fontSize: "12px",
-                  fontFamily: "Digital Numbers",
                 },
               }}
             />
